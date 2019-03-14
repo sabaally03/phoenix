@@ -40,3 +40,5 @@ History
 *.LOG
 *.drc
 *.html
+pcb light/__Previews/main schematic.SchDocPreview
+*.SchDocPreview
