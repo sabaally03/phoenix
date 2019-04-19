@@ -55,7 +55,7 @@ GenerateClassCluster=0
 DocumentUniqueId=JEIOLHQG
 
 [Document2]
-DocumentPath=PCB sensor.PcbDoc
+DocumentPath=pcb sensor.PcbDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -69,7 +69,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=YHJKGEVG
+DocumentUniqueId=JSCTSKEG
 
 [Configuration1]
 Name=Sources
