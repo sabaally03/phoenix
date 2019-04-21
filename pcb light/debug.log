@@ -642,3 +642,7 @@
 [0416/180957:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0416/181002:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
 [0416/181007:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0421/143501:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0421/143506:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0421/143507:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
+[0421/143511:WARNING:dns_config_service_win.cc(665)] Failed to read DnsConfig.
