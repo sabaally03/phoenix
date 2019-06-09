@@ -71,6 +71,10 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=MLKPPPPN
 
+[GeneratedDocument1]
+DocumentPath=Project Outputs for PCB_Project top\Design Rule Check - top.html
+DItemRevisionGUID=
+
 [Configuration1]
 Name=Sources
 ParameterCount=0
