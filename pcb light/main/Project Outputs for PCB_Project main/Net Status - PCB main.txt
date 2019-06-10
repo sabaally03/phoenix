@@ -1,0 +1,116 @@
+Net Status Report
+Filename     : D:\saba\robotic\sidney 2019\F1-RCJ2019\pcb light\main\PCB main.PcbDoc
+Date         : 6/11/2019
+Time         : 12:12:50 AM
+Time Elapsed : 00:00:00
+
+Nets, Layer, Length
+    3V3, Signal Layers Only, 381.0525mm
+    3V3AMS, Signal Layers Only, 47.4824mm
+    3V3HC, Signal Layers Only, 12.657mm
+    ADRESS0, Signal Layers Only, 42.5316mm
+    ADRESS1, Signal Layers Only, 40.9493mm
+    ADRESS2, Signal Layers Only, 16.2516mm
+    ADRESS3, Signal Layers Only, 15.5413mm
+    BALLSENSORS, Signal Layers Only, 31.9724mm
+    BUZZER, Signal Layers Only, 14.2389mm
+    GND, Signal Layers Only, 1359.593mm
+    IN GPIO mlb, Signal Layers Only, 55.5427mm
+    IN GPIO mlf, Signal Layers Only, 57.4267mm
+    IN GPIO mrb, Signal Layers Only, 82.3208mm
+    IN GPIO mrf, Signal Layers Only, 90.8199mm
+    IN PWM mlb, Signal Layers Only, 89.0719mm
+    IN PWM mlf, Signal Layers Only, 75.4019mm
+    IN PWM mrb, Signal Layers Only, 59.7405mm
+    IN PWM mrf, Signal Layers Only, 68.9597mm
+    IN REG, Signal Layers Only, 15.8592mm
+    MISO p, Signal Layers Only, 10.3942mm
+    MISO pixy, Signal Layers Only, 36.706mm
+    MOSI p, Signal Layers Only, 21.8515mm
+    MOSI pixy, Signal Layers Only, 31.9688mm
+    NetBuzzer1_2, Signal Layers Only, 7.6249mm
+    NetDiode1_2, Signal Layers Only, 19.7051mm
+    NetLED VCC_1, Signal Layers Only, 2.8761mm
+    NetLED VSS_1, Signal Layers Only, 3.2246mm
+    NetNPN BUZZER_2, Signal Layers Only, 8.7331mm
+    NetPH USB_2, Signal Layers Only, 5.4942mm
+    NetPH USB_3, Signal Layers Only, 9.2289mm
+    NetRES SHOOT_2, Signal Layers Only, 10.3704mm
+    Netcap15_1, Signal Layers Only, 11.4387mm
+    Netcap15_2, Signal Layers Only, 57.052mm
+    Netcap16_1, Signal Layers Only, 9.4858mm
+    Netcap16_2, Signal Layers Only, 42.3571mm
+    Netcap17_1, Signal Layers Only, 11.0745mm
+    Netcap17_2, Signal Layers Only, 55.7401mm
+    Netcap18_1, Signal Layers Only, 10.1899mm
+    Netcap18_2, Signal Layers Only, 38.9815mm
+    Netcap19_1, Signal Layers Only, 6.4688mm
+    Netcap19_2, Signal Layers Only, 47.8295mm
+    Netcap1_1, Signal Layers Only, 36.4141mm
+    Netcap20_1, Signal Layers Only, 5.0156mm
+    Netcap20_2, Signal Layers Only, 33.7688mm
+    Netcap21_1, Signal Layers Only, 5.3634mm
+    Netcap21_2, Signal Layers Only, 44.0998mm
+    Netcap22_1, Signal Layers Only, 5.93mm
+    Netcap22_2, Signal Layers Only, 31.6063mm
+    Netcap23_1, Signal Layers Only, 161.9106mm
+    Netcap25_2, Signal Layers Only, 7.0641mm
+    Netcap26_2, Signal Layers Only, 8.4067mm
+    Netcap27_2, Signal Layers Only, 8.0508mm
+    Netcap28_2, Signal Layers Only, 10.0619mm
+    Netcap2_2, Signal Layers Only, 4.6349mm
+    Netcap3_2, Signal Layers Only, 5.8148mm
+    Netcap4_2, Signal Layers Only, 4.8808mm
+    Netcap5_2, Signal Layers Only, 5.0705mm
+    Netselon_1, Signal Layers Only, 11.1957mm
+    OUTBA, Signal Layers Only, 40.714mm
+    OUTBB, Signal Layers Only, 47.6454mm
+    OUTFA, Signal Layers Only, 58.112mm
+    OUTFB, Signal Layers Only, 56.5327mm
+    OUTLA, Signal Layers Only, 39.8105mm
+    OUTLB, Signal Layers Only, 48.7064mm
+    OUTMULTI, Signal Layers Only, 15.5029mm
+    OUTRA, Signal Layers Only, 49.5004mm
+    OUTRB, Signal Layers Only, 44.8051mm
+    RESET, Signal Layers Only, 26.9394mm
+    RESET BNO, Signal Layers Only, 56.8692mm
+    RX, Signal Layers Only, 130.8935mm
+    S0, Signal Layers Only, 56.0556mm
+    S1, Signal Layers Only, 51.585mm
+    S10, Signal Layers Only, 78.224mm
+    S11, Signal Layers Only, 87.1647mm
+    S12, Signal Layers Only, 65.2222mm
+    S13, Signal Layers Only, 65.0362mm
+    S14, Signal Layers Only, 122.9416mm
+    S15, Signal Layers Only, 121.2443mm
+    S16, Signal Layers Only, 64.9388mm
+    S17, Signal Layers Only, 62.2963mm
+    S18, Signal Layers Only, 82.3277mm
+    S19, Signal Layers Only, 83.3054mm
+    S2, Signal Layers Only, 48.2407mm
+    S3, Signal Layers Only, 38.0573mm
+    S4, Signal Layers Only, 27.4171mm
+    S5, Signal Layers Only, 31.9935mm
+    S6, Signal Layers Only, 36.2804mm
+    S7, Signal Layers Only, 41.4555mm
+    S8, Signal Layers Only, 49.5501mm
+    S9, Signal Layers Only, 68.0394mm
+    SCK p, Signal Layers Only, 11.0149mm
+    SCK pixy, Signal Layers Only, 39.4429mm
+    SCL, Signal Layers Only, 54.8642mm
+    SCL L, Signal Layers Only, 9.8561mm
+    SCL lazer, Signal Layers Only, 31.5378mm
+    SCLTEENSY, Signal Layers Only, 17.1895mm
+    SDA, Signal Layers Only, 59.6059mm
+    SDA L, Signal Layers Only, 9.6765mm
+    SDA lazer, Signal Layers Only, 26.884mm
+    SDATEENSY, Signal Layers Only, 17.6359mm
+    SET, Signal Layers Only, 92.6005mm
+    SHOOT, Signal Layers Only, 85.3862mm
+    Scense1, Signal Layers Only, 10.2082mm
+    Scense2, Signal Layers Only, 5.9743mm
+    TX, Signal Layers Only, 135.7334mm
+    VCC, Signal Layers Only, 548.9901mm
+    VSS, Signal Layers Only, 302.8075mm
+    feedback, Signal Layers Only, 28.0446mm
+count : 108
