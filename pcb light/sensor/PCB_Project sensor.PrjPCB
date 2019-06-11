@@ -71,10 +71,6 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JEIOLHQG
 
-[GeneratedDocument1]
-DocumentPath=Project Outputs for PCB_Project sensor\Design Rule Check - pcb sensor.html
-DItemRevisionGUID=
-
 [Configuration1]
 Name=Sources
 ParameterCount=0
