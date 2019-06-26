@@ -70,18 +70,14 @@ void setup()
   pinMode(FEEDBACK, INPUT);
   //  pinMode(led,OUTPUT);
   //=============================================//
-      digitalWrite(BUZ, HIGH);
-      delay(1000);
-      digitalWrite(BUZ, LOW);
-      delay(100);
-      digitalWrite(BUZ, HIGH);
-      delay(105);
-      digitalWrite(BUZ, LOW);
-      delay(300);
-      digitalWrite(BUZ, HIGH);
-      delay(200);
-      digitalWrite(BUZ, LOW);
-      delay(100);
+  digitalWrite(BUZ, HIGH);
+  delay(105);
+  digitalWrite(BUZ, LOW);
+  delay(300);
+  digitalWrite(BUZ, HIGH);
+  delay(200);
+  digitalWrite(BUZ, LOW);
+  delay(100);
   ////////////////////
   Wire.setSCL(7);
   Wire.setSDA(8);
@@ -90,41 +86,40 @@ void setup()
   analogWriteResolution(10);
   analogWriteFrequency(9, 29296);
   myTimer.begin (interrupt, 25000);
-  nSETUP  = (EEPROM.read(1) << 8 | EEPROM.read(2));
-  //  R_noise[0] = (EEPROM.read(3) << 8 | EEPROM.read(4));
-  //  R_noise[1] = (EEPROM.read(5) << 8 | EEPROM.read(6));
-  //  F_noise[0] = (EEPROM.read(7) << 8 | EEPROM.read(8));
-  //  F_noise[1] = (EEPROM.read(9) << 8 | EEPROM.read(10));
-  //  L_noise[0] = (EEPROM.read(11) << 8 | EEPROM.read(12));
-  //  L_noise[1] = (EEPROM.read(13) << 8 | EEPROM.read(14));
-  //  B_noise[0] = (EEPROM.read(15) << 8 | EEPROM.read(16));
-  //  B_noise[1] = (EEPROM.read(17) << 8 | EEPROM.read(18));
+//  nSETUP  = (EEPROM.read(1) << 8 | EEPROM.read(2));
+//  R_noise[0] = (EEPROM.read(3) << 8 | EEPROM.read(4));
+//  R_noise[1] = (EEPROM.read(5) << 8 | EEPROM.read(6));
+//  F_noise[0] = (EEPROM.read(7) << 8 | EEPROM.read(8));
+//  F_noise[1] = (EEPROM.read(9) << 8 | EEPROM.read(10));
+//  L_noise[0] = (EEPROM.read(11) << 8 | EEPROM.read(12));
+//  L_noise[1] = (EEPROM.read(13) << 8 | EEPROM.read(14));
+//  B_noise[0] = (EEPROM.read(15) << 8 | EEPROM.read(16));
+//  B_noise[1] = (EEPROM.read(17) << 8 | EEPROM.read(18));
   //    Calibrate();
 }
 
 //////////////////////////////////////////////////////////////////
 
-void loop()
-{
-    if (digitalRead(SET) == LOW)
+void loop(){
+  if (digitalRead(SET) == LOW)
+  {
+    while (digitalRead(SET) == LOW)
     {
-      while (digitalRead(SET) == LOW)
-      {
-        nointerrupt = 100;
-        digitalWrite(BUZ, HIGH);
-        read_compass();
-      }
-      EEPROM.write(1, highByte(bearing));
-      EEPROM.write(2, lowByte(bearing));
-      nSETUP  = bearing ;
-     digitalWrite(BUZ,LOW);
-      nointerrupt = 0;
+      nointerrupt = 100;
+      digitalWrite(BUZ, HIGH);
+      read_compass();
+      set_kaf();
     }
-   
-  
-    biggest();
-    if (Arezoo < big_sensor ) follow();
-    else
+    nSETUP  = bearing ;
+    digitalWrite(BUZ, LOW);
+    nointerrupt = 0;
+  }
+  biggest();
+  if (Arezoo < big_sensor ) follow();
+  else
     STOP();
-  //show_sensor();
+show_kaf();
+//SHOWKAF();
+
+
 }

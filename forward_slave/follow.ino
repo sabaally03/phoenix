@@ -1,130 +1,468 @@
-///////////////////////start//////////////////////////////////////////
-#include <Wire.h>
-#include <EEPROM.h>
-IntervalTimer myTimer;
-#define address 0x60
-//-------------------------- VAR -------------------------//
-unsigned int n_cmp, big_sensor, big_sensor_num = 17, r_stop, nointerrupt;
-float reduction = 0.7 ;
-float z ;
-////EEPROM write
-int kaj , nahang , nSETUP, high, low, counter , DISTANCE = 710 , Arezoo = 500 ;
-signed int set_m = 0, set_s = 0, Compass;
-char Movement;
-int SRFReader[6] , compass;
-char srfl[3];
-char srfb[3];
-char srfr[3] , Mode;
-unsigned char O_Mode, Out, Out_old;
-boolean stop_out, other_location, location;
-char bluetooth_input[9], other_dn, dn;
-int other_big_sensor , other_sensor_value;
-float battery_voltage, V;
-int Sensor, eeprom_cmp;
-unsigned int distance = 650 , noise = 50, intrt = 0;
-int kaf_F[2] , kaf_L[2] , kaf_B[2] , kaf_R[2] , DSensor[20], FaseleAzTop ;
-int noise_fo , noise_fi , noise_ri , noise_ro , noise_bi , noise_bo , noise_li , noise_lo ;
-bool  fo , ro , bo , lo , fi , ri , bi , li ;
-int F_noise[2], R_noise[2], L_noise[2], B_noise[2], SENSOR[21], bearing , big_distance_num , big_distance ;
-int sofo , sofi , soro , sori , sobo , sobi , soli , solo;
-char cmp[3], bigsensor[3], bigsensornum[2];
-const int led = 13;
-int a[16];
-
-//eeprom
-//**************************PINS*************************//
-int RX = 0, TX = 1, SET = 2,/* RX1 = 7, TX1 = 8*/ PWM_MRF = 6, PWM_MLF = 9, PWM_MRB = 5, PWM_MLB = 10, SHOOT = 29;
-int SDAl = 4, SCLl = 3, SDA_TEENSY = 8, SCL_TEENSY = 7 , GPIO_MRF = 25, GPIO_MLF = 26, GPIO_MRB = 24, GPIO_MLB = 28, BUZ = 19;
-int SOFO = A10 , SOFI = A11 , SORO = 22 , SORI = 23 , SOLO = 33 , SOLI = 34 , SOBO = 35 , SOBI = 36 , FEEDBACK = A21 , SCENSE1 = 32 , SCENSE2 = 31 , BALL = A22 ;
-int AD3 = 17 , AD2 = 16 , AD0 = 14 , AD1 = 15;
-int mlf, mrb, mlb, mrf;
-int srfL , srfB , srfR ;
-int reset_BNO = 30 , sck_pixy = 27 , miso_pixy = 12 , mosi_pixy = 11 , S16 = 21 , S17 = 20 , S18 = 38 , S19 = 37;
-///////////////////////////////////////////////////////
-void setup()
+void MOTOR(int pwmlf, int pwmlb, int pwmrf, int pwmrb)
 {
-  //=====================PINS=============================//
-  pinMode(PWM_MRF, OUTPUT);
-  pinMode(PWM_MLF, OUTPUT);
-  pinMode(PWM_MRB, OUTPUT);
-  pinMode(PWM_MLB, OUTPUT);
-  pinMode(AD0, OUTPUT);
-  pinMode(AD1, OUTPUT);
-  pinMode(AD2, OUTPUT);
-  pinMode(AD3, OUTPUT);
-  pinMode(GPIO_MRF, OUTPUT);
-  pinMode(GPIO_MLF, OUTPUT);
-  pinMode(GPIO_MRB, OUTPUT);
-  pinMode(GPIO_MLB, OUTPUT);
-  pinMode(BALL, INPUT);
-  pinMode(SOFO, INPUT);
-  pinMode(SOBO, INPUT);
-  pinMode(SOBI, INPUT);
-  pinMode(SORO, INPUT);
-  pinMode(SORI, INPUT);
-  pinMode(SOFI, INPUT);
-  pinMode(SOLO, INPUT);
-  pinMode(SOLI, INPUT);
-  pinMode(BUZ, OUTPUT);
-  pinMode(SET, INPUT_PULLUP);
-  pinMode(FEEDBACK, INPUT);
-  //  pinMode(led,OUTPUT);
-  //=============================================//
-      digitalWrite(BUZ, HIGH);
-      delay(1000);
-      digitalWrite(BUZ, LOW);
-      delay(100);
-      digitalWrite(BUZ, HIGH);
-      delay(105);
-      digitalWrite(BUZ, LOW);
-      delay(300);
-      digitalWrite(BUZ, HIGH);
-      delay(200);
-      digitalWrite(BUZ, LOW);
-      delay(100);
-  ////////////////////
-  Wire.setSCL(7);
-  Wire.setSDA(8);
-  Wire.begin();
-  Serial.begin(38400);
-  analogWriteResolution(10);
-  analogWriteFrequency(9, 29296);
-  myTimer.begin (interrupt, 25000);
-  nSETUP  = (EEPROM.read(1) << 8 | EEPROM.read(2));
-  //  R_noise[0] = (EEPROM.read(3) << 8 | EEPROM.read(4));
-  //  R_noise[1] = (EEPROM.read(5) << 8 | EEPROM.read(6));
-  //  F_noise[0] = (EEPROM.read(7) << 8 | EEPROM.read(8));
-  //  F_noise[1] = (EEPROM.read(9) << 8 | EEPROM.read(10));
-  //  L_noise[0] = (EEPROM.read(11) << 8 | EEPROM.read(12));
-  //  L_noise[1] = (EEPROM.read(13) << 8 | EEPROM.read(14));
-  //  B_noise[0] = (EEPROM.read(15) << 8 | EEPROM.read(16));
-  //  B_noise[1] = (EEPROM.read(17) << 8 | EEPROM.read(18));
-  //    Calibrate();
+  pwmlf = pwmlf * -1 * reduction;
+  pwmlb = pwmlb * -1 * reduction;
+  pwmrf = pwmrf * -1 * reduction;
+  pwmrb = pwmrb * 1 * reduction;
+
+
+  if (pwmlf > 1023)   pwmlf = 1023;
+  if (pwmlb > 1023)   pwmlb = 1023;
+  if (pwmrb > 1023)   pwmrb = 1023;
+  if (pwmrf > 1023)   pwmrf = 1023;
+  if (pwmlf < -1023)   pwmlf = -1023;
+  if (pwmlb < -1023)   pwmlb = -1023;
+  if (pwmrb < -1023)   pwmrb = -1023;
+  if (pwmrf < -1023)   pwmrf = -1023;
+
+  //*********************Left's MOTOR MAIN
+  if (pwmlf > 0)
+  {
+    digitalWrite(GPIO_MLF, LOW);
+    analogWrite(PWM_MLF, pwmlf);
+  }
+  else if (pwmlf < 0)
+  {
+    digitalWrite(GPIO_MLF, HIGH);
+    analogWrite(PWM_MLF, 1023 + pwmlf);
+  }
+  else if (pwmlf == 0)
+  {
+    digitalWrite(GPIO_MLF, HIGH);
+    analogWrite(PWM_MLF, 1023);
+  }
+
+  //*********************Left's MOTOR MAIN
+  if (pwmlb > 0)
+  {
+    digitalWrite(GPIO_MLB, LOW);
+    analogWrite(PWM_MLB, pwmlb);
+  }
+  else if (pwmlb < 0)
+  {
+    digitalWrite(GPIO_MLB, HIGH);
+    analogWrite(PWM_MLB, pwmlb + 1023);
+  }
+  else if (pwmlb == 0)
+  {
+    digitalWrite(GPIO_MLB, HIGH);
+    analogWrite(PWM_MLB, 1023);
+  }
+  //*********************Right's MOTOR MAIN
+  if (pwmrf > 0)
+  {
+    digitalWrite(GPIO_MRF, LOW);
+    analogWrite(PWM_MRF, pwmrf);
+  }
+  else if (pwmrf < 0)
+  {
+    digitalWrite(GPIO_MRF, HIGH);
+    analogWrite(PWM_MRF, pwmrf + 1023);
+  }
+  else if (pwmrf == 0)
+  {
+    digitalWrite(GPIO_MRF, HIGH);
+    analogWrite(PWM_MRF, 1023);
+  }
+  //*********************Right's MOTOR MAIN
+  if (pwmrb > 0)
+  { digitalWrite(GPIO_MRB, LOW);
+    analogWrite(PWM_MRB, pwmrb);
+  }
+  else if (pwmrb < 0)
+  {
+    digitalWrite(GPIO_MRB, HIGH);
+    analogWrite(PWM_MRB, pwmrb + 1023);
+
+  }
+  else if (pwmrb == 0)
+  {
+    digitalWrite(GPIO_MRB, HIGH);
+    analogWrite(PWM_MRB, 1023);
+  }
+  //  sprintf(buf, "%d,%d,%d,%d ", pwmlf, pwmlb, pwmrf, pwmrb);
+  //  Serial.println(buf);
 }
+////8////MOVEMENT//////////////////////////////
+void MOVE(int z) {
+  switch ( z)
+  {
+    case 0:
+      MOTOR(1023 , 1023 , -1023 , -1023 );
+      break;
 
-//////////////////////////////////////////////////////////////////
+    case 1:
+      MOTOR(1023 , 512 , -512 , -1023 );
+      break;
 
-void loop()
+    case 2:
+      MOTOR(1023 , 0 , 0 , -1023 );
+      break;
+
+    case 3:
+      MOTOR(1023 , -512 , 512 , -1023    );
+      break;
+
+    case 4:
+      MOTOR(1023     , -1023     , 1023     , -1023     );
+      break;
+
+    case 5:
+      MOTOR(512     , -1023     , 1023     , -512     );
+      break;
+
+    case 6:
+      MOTOR(0     , -1023     , 1023     , 0     );
+      break;
+
+    case 7:
+      MOTOR(-512     , -1023     , 1023     , 512     );
+      break;
+
+    case 8:
+      MOTOR(-1023     , -1023     , 1023     , 1023     );
+      break;
+
+    case 9:
+      MOTOR(-1023     , -512     , 512     , 1023     );
+      break;
+
+    case 10:
+      MOTOR(-1023   , 0     , 0     , 1023     );
+      break;
+
+    case 11:
+      MOTOR(-1023     , 512     , -512     , 1023     );
+      break;
+
+    case 12:
+      MOTOR(-1023     , 1023     , -1023     , 1023     );
+      break;
+
+    case 13:
+      MOTOR(-512     , 1023     , -1023     , 512     );
+      break;
+
+    case 14:
+      MOTOR(0     , 1023     , -1023     , 0     );
+      break;
+
+    case 15:
+      MOTOR(512     , 1023     , -1023     , -512     );
+      break;
+  }
+  Movement = z ;
+
+}
+void Move(int a)
 {
-    if (digitalRead(SET) == LOW)
-    {
-      while (digitalRead(SET) == LOW)
+
+  switch (a)
+  {
+    case 0:
+      MOTOR(1023 + set_m, 1023 + set_m, -1023 + set_m, -1023 + set_m);
+      break;
+
+    case 1:
+      MOTOR(1023 + set_m, 512 + set_m, -512 + set_m, -1023 + set_m);
+      break;
+
+    case 2:
+      MOTOR(1023 + set_m, 0 + set_m, 0 + set_m, -1023 + set_m);
+      break;
+
+    case 3:
+      MOTOR(1023 + set_m, -512 + set_m, 512 + set_m, -1023 + set_m);
+      break;
+
+    case 4:
+      MOTOR(1023 + set_m, -1023 + set_m, 1023 + set_m, -1023 + set_m);
+      break;
+
+    case 5:
+      MOTOR(512 + set_m, -1023 + set_m, 1023 + set_m, -512 + set_m);
+      break;
+
+    case 6:
+      MOTOR(0 + set_m, -1023 + set_m, 1023 + set_m, 0 + set_m);
+      break;
+
+    case 7:
+      MOTOR(-512 + set_m, -1023 + set_m, 1023 + set_m, 512 + set_m);
+      break;
+
+    case 8:
+      MOTOR(-1023 + set_m, -1023 + set_m, 1023 + set_m, 1023 + set_m);
+      break;
+
+    case 9:
+      MOTOR(-1023 + set_m, -512 + set_m, 512 + set_m, 1023 + set_m);
+      break;
+
+    case 10:
+      MOTOR(-1023 + set_m, 0 + set_m, 0 + set_m, 1023 + set_m);
+      break;
+
+    case 11:
+      MOTOR(-1023 + set_m, 512 + set_m, -512 + set_m, 1023 + set_m);
+      break;
+
+    case 12:
+      MOTOR(-1023 + set_m, 1023 + set_m, -1023 + set_m, 1023 + set_m);
+      break;
+
+    case 13:
+      MOTOR(-512 + set_m, 1023 + set_m, -1023 + set_m, 512 + set_m);
+      break;
+
+    case 14:
+      MOTOR(0 + set_m, 1023 + set_m, -1023 + set_m, 0 + set_m);
+      break;
+
+    case 15:
+      MOTOR(512 + set_m, 1023 + set_m, -1023 + set_m, -512     );
+      break;
+  }
+  Movement = a;
+}
+//9//////////////////////////////////////////////////////////////
+//*************************FOLLOW****************************//
+//////////////////////////////////////////////////////////////
+void follow(void)
+{
+  refresh();
+  biggest();
+  if (big_sensor > distance )
+  {
+      switch (big_sensor_num)
       {
-        nointerrupt = 100;
-        digitalWrite(BUZ, HIGH);
-        read_compass();
+        case 0:
+          Move(0);
+          break;
+
+        case 1:
+          Move(2);
+          break;
+
+        case 2:
+          Move(4);
+          break;
+
+        case 3:
+          Move(5);
+          break;
+
+        case 4:
+          Move(6);
+          break;
+
+        case 5:
+          Move(8);
+          break;
+
+        case 6:
+          Move(8);
+          break;
+
+        case 7:
+          Move(10);
+          break;
+
+        case 8:
+          Move(5);
+          break;
+
+        case 9:
+          Move(6);
+          break;
+
+        case 10:
+          Move(8);
+          break;
+
+        case 11:
+          Move(8);
+          break;
+
+        case 12:
+          Move(10);
+          break;
+
+        case 13:
+          Move(11);
+          break;
+
+        case 14:
+          Move(12);
+          break;
+
+        case 15:
+          Move(14);
+          break;
       }
-      EEPROM.write(1, highByte(bearing));
-      EEPROM.write(2, lowByte(bearing));
-      nSETUP  = bearing ;
-     digitalWrite(BUZ,LOW);
-      nointerrupt = 0;
     }
-   
-  
-    biggest();
-    if (Arezoo < big_sensor ) follow();
-    else
-    STOP();
-  //show_sensor();
+  else
+  {
+    switch (big_sensor_num)
+    {
+      case 0:
+        Move(0);
+        break;
+
+      case 1:
+        Move(1);
+        break;
+
+      case 2:
+        Move(2);
+        break;
+
+      case 3:
+        Move(3);
+        break;
+
+      case 4:
+        Move(4);
+        break;
+
+      case 5:
+        Move(5);
+        break;
+
+      case 6:
+        Move(6);
+        break;
+
+      case 7:
+        Move(7);
+        break;
+
+      case 8:
+        Move(8);
+        break;
+
+      case 9:
+        Move(9);
+        break;
+
+      case 10:
+        Move(10);
+        break;
+
+      case 11:
+        Move(11);
+        break;
+
+      case 12:
+        Move(12);
+        break;
+
+      case 13:
+        Move(13);
+        break;
+
+      case 14:
+        Move(14);
+        break;
+
+      case 15:
+        Move(15);
+        break;
+    }
+  }
+}
+////////////////////////////////////follow ghadim //////////////////////////////////////////////
+//void follow(void)
+//{
+//  refresh();
+//  biggest();
+//  if (big_distance < distance) {
+//    if (big_distance_num == 16) {
+//      Move(0);
+//    }
+//    else if (big_distance_num == 17) {
+//      Move(4);
+//    }
+//    else if (big_distance_num == 18) {
+//      Move(8);
+//    }
+//    else if (big_distance_num == 19) {
+//      Move(12);
+//    }
+//  }
+//  else
+//  {
+//    switch (big_sensor_num)
+//    {
+//      case 0:
+//        Move(0);
+//        break;
+//
+//      case 1:
+//        Move(2);
+//        break;
+//
+//      case 2:
+//        Move(4);
+//        break;
+//
+//      case 3:
+//        Move(5);
+//        break;
+//
+//      case 4:
+//        Move(6);
+//        break;
+//
+//      case 5:
+//        Move(7);
+//        break;
+//
+//      case 6:
+//        Move(8);
+//        break;
+//
+//      case 7:
+//        Move(9);
+//        break;
+//
+//      case 8:
+//        Move(4);
+//        break;
+//
+//      case 9:
+//        Move(7);
+//        break;
+//
+//      case 10:
+//        Move(8);
+//        break;
+//
+//      case 11:
+//        Move(8);
+//        break;
+//
+//      case 12:
+//        Move(8);
+//        break;
+//
+//      case 13:
+//        Move(9);
+//        break;
+//
+//      case 14:
+//        Move(10);
+//        break;
+//
+//      case 15:
+//        Move(11);
+//        break;
+//    }
+//  }
+//}
+///////////////////////////////////////////////////////////////////////
+void STOP(void)
+{
+  reduction = 1;
+  MOTOR(set_s, set_s, set_s, set_s);
 }

@@ -1,71 +1,377 @@
-void Calibrate() {
-  nointerrupt = 100;
-  for (int k = 0 ; k < 4 ; k++) {
-    Wire.beginTransmission(address);
-    digitalWrite(BUZ, HIGH);
-    delay(100);
-    Wire.write(15);
-    Wire.write(0xff);
-    Wire.endTransmission();
-    digitalWrite(BUZ, LOW);
-    delay(3000);
-  }
-  nointerrupt = 0;
-}
-void read_compass() {
-  byte highByte;
-  byte lowByte;
-  Wire.beginTransmission(address);
-  Wire.write(2);
-  Wire.endTransmission();
-  Wire.requestFrom(address, 2);
-  highByte = Wire.read();
-  lowByte = Wire.read();
-  bearing = ((highByte << 8) + lowByte) / 10;
-  bearing = map(bearing , 0, 360, 0, 1023);
-}
-signed int CMPS() {
-  int a , b ;
-  read_compass();
-  a = bearing  - nSETUP ;
-  if (a > 0) {
-    b = a;
-  }
-  else {
-    b = a + 1023;
-  }
-  if ( b > 512) {
-    b = b - 1023;
-  }
-  else {
-    b = b ;
-  }
-  compass = -b ;
-  return compass ;
-}
+void OUT(void)
+{
+  set_bits();
+  biggest();
 
-///////////////////////////////spin speed/////////////////////////
-signed int spin_speed(int divided_value , int added_value , int zero_degree) {
-  int compass_input , compass_output;
-  CMPS();
-  compass_input = compass ;
-  if (compass_input >= zero_degree)
-    compass_output = ( compass_input / divided_value ) + added_value;
-  else if (compass_input <= (- zero_degree))
-    compass_output = ( compass_input / divided_value ) - added_value;
-  else compass_output = 0 ;
-  return compass_output ;
+  if (ro || ri)
+  {
+    while ((big_sensor_num < 8) && ( big_sensor_num >= 0))
+    {
+
+      biggest();
+      set_bits();
+
+      if (fo || fi)
+      {
+        if (fo) Move(9);
+        else if (fi)
+        {
+          while (!fo)
+          {
+
+            set_bits();
+            Move(9);
+          }
+        }
+      }
+      else if (bo || bi)
+      {
+        if (bo) Move(15);
+        else if (bi)
+        {
+          while (!bo)
+          {
+
+            set_bits();
+            Move(15);
+          }
+        }
+      }
+      else if (ro)
+      {
+        Move(12);
+      }
+      else if (ri)
+      {
+        while (!ro)
+        {
+          set_bits();
+          Move(12);
+        }
+      }
+      else
+        STOP();
+    }
+
+    ////////////////////////////////////////// Khareje While /////////////////////////////////////////////////
+   
+    if (fo || fi)
+    {
+      if (fo) Move(9);
+      else if (fi)
+      {
+        while (!fo)
+        {
+          set_bits();
+          Move(9);
+        }
+      }
+    }
+    else if (bo || bi)
+    {
+      if (bo) Move(15);
+      else if (bi)
+      {
+        while (!bo)
+        {
+          set_bits();
+          Move(15);
+        }
+      }
+    }
+    else if (ro)
+    {
+      Move(12);
+    }
+    else if (ri)
+    {
+      while (!ro)
+      {
+        set_bits();
+        Move(12);
+
+      }
+    }
+    else STOP();
+
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  else if (lo || li)
+  {
+
+    while (big_sensor_num > 8 && big_sensor_num < 16)
+    {
+      biggest();
+      set_bits();
+
+      if (fo || fi)
+      {
+        if (fo) {
+          Move(7);
+        }
+        else if (fi)
+        {
+          while (!fo)
+          {
+            set_bits();
+            Move(7);
+          }
+        }
+      }
+      else if (bo || bi)
+      {
+        if (bo) Move(1);
+        else if (bi)
+        {
+          while (!bo)
+          {
+            set_bits();
+            Move(1);
+          }
+        }
+      }
+      else if (lo)
+      {
+        Move(4);
+      }
+      else if (li)
+      {
+        while (!lo)
+        {
+          set_bits();
+          Move(4);
+        }
+      }
+      else STOP();
+    }
+    /////////////////////////////////////////////////////////////////////
+   
+    if (fo|| fi)
+    {
+      if (fo) Move(7);
+      else if (fi)
+      {
+        while (!fo)
+        {
+          set_bits();
+          Move(7);
+        }
+      }
+    }
+   
+    else if (bo || bi)
+    {
+      if (bo) Move(1);
+      else if (bi)
+      {
+        while (!bo)
+        {
+          set_bits();
+          Move(1);
+        }
+      }
+    }
+  else if (lo)
+    {
+      Move(4);
+    }
+    else if(li)
+    {
+      while (!lo)
+      {
+        set_bits();
+        Move(4);
+
+      }
+    }
+    else STOP();
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  else if (fo || fi)
+  {
+    while (big_sensor_num > 11 || big_sensor_num < 5)
+    {
+      biggest();
+      set_bits();
+      
+       if (ro || ri)
+      {
+        if (ro) Move(9);
+        else if (ri)
+        {
+          while (!ro )
+          {
+            set_bits();
+            Move(9);
+
+          }
+        }
+      }
+      else if (lo || li)
+      {
+        if (lo) Move(7);
+        else if (li)
+        {
+          while (!lo)
+          {
+            set_bits();
+            Move(7);
+          }
+        }
+      }
+      else if (fo)
+      {
+        Move(8);
+      }
+      else if (fi)
+      {
+        while (!fo)
+        {
+          set_bits();
+          Move(8);
+        }
+      }
+      else STOP();
+    }
+    ///////////////////////////////////////////////////////////////////////
+   
+     if (ro || ri)
+    {
+      if (ro) Move(9);
+      else if (ri)
+      {
+        while (!ro)
+        {
+          set_bits();
+          Move(9);
+
+        }
+      }
+    }
+    else if (lo || li)
+    {
+      if (lo) Move(7);
+      else if (li)
+      {
+        while (!lo)
+        {
+          set_bits();
+          Move(7);
+        }
+      }
+    } 
+    else if (fo)
+    {
+      Move(8);
+    }
+    else if (fi)
+    {
+      while (!fo)
+      {
+        set_bits();
+        Move(8);
+
+      }
+    }
+    else STOP();
+  }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  else if (bo|| bi)
+  {
+    while (big_sensor_num < 13 && big_sensor_num > 3)
+    {
+      biggest();
+      set_bits();
+  
+       if (ro || ri)
+      {
+        if (ro) Move(15);
+        else if (ri)
+        {
+          while (!ro)
+          {
+            set_bits();
+            Move(15);
+
+          }
+        }
+      }
+      else if (lo || li)
+      {
+        if (lo) Move(1);
+        else if (li)
+        {
+          while (!lo)
+          {
+            set_bits();
+            Move(1);
+
+          }
+        }
+      }
+        else if (bo)
+      {
+        Move(0);
+      }
+      else if (bi)
+      {
+        while (!bo)
+        {
+          set_bits();
+          Move(0);
+
+        }
+      }
+      else STOP();
+    }
+    ////////////////////////////////////////////////////////////////
+  
+    if (ro || ri)
+    {
+      if (ro) Move(15);
+      else if (ri)
+      {
+        while (!ro)
+        {
+          set_bits();
+          Move(15);
+
+        }
+      }
+    }
+    else if (lo || li)
+    {
+      if (lo) Move(1);
+      else if (li)
+      {
+        while (!lo)
+        {
+          set_bits();
+          Move(1);
+
+        }
+      }
+    } 
+    else if (bo)
+    {
+      Move(0);
+    }
+    else if (bi)
+    {
+      while (!bo)
+      {
+        set_bits();
+        Move(0);
+
+      }
+    }
+    else STOP();
+  }
+
+  else
+  {
+ follow();
+  }
+
 
 }
-///////////////////////////////////////////////////////////////////////////
-void interrupt() {
-  if ( nointerrupt == 0) {
-    read_compass();
-    set_s = spin_speed(1, 60, 10);
-    set_m = spin_speed(1, 60, 10);
-    reduction = 0.8;
-  }}
-//    digitalWrite(19, HIGH);   // turn the LED on (HIGH is the voltage level)
-//  delay(1000);               // wait for a second
-//  digitalWrite(19, LOW);    // turn the LED off by making the voltage LOW
-//  delay(1000);
