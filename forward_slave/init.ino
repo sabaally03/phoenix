@@ -18,9 +18,7 @@ void read_compass() {
   Wire.beginTransmission(address);
   Wire.write(2);
   Wire.endTransmission();
-
   Wire.requestFrom(address, 2);
-  while (Wire.available() < 2);
   highByte = Wire.read();
   lowByte = Wire.read();
   bearing = ((highByte << 8) + lowByte) / 10;
@@ -66,5 +64,8 @@ void interrupt() {
     set_s = spin_speed(1, 60, 10);
     set_m = spin_speed(1, 60, 10);
     reduction = 0.8;
-  }
-}
+  }}
+//    digitalWrite(19, HIGH);   // turn the LED on (HIGH is the voltage level)
+//  delay(1000);               // wait for a second
+//  digitalWrite(19, LOW);    // turn the LED off by making the voltage LOW
+//  delay(1000);

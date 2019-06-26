@@ -14,14 +14,14 @@ char Movement;
 int SRFReader[6] , compass;
 char srfl[3];
 char srfb[3];
-char srfr[3], Mode;
+char srfr[3] , Mode;
 unsigned char O_Mode, Out, Out_old;
 boolean stop_out, other_location, location;
 char bluetooth_input[9], other_dn, dn;
 int other_big_sensor , other_sensor_value;
 float battery_voltage, V;
 int Sensor, eeprom_cmp;
-unsigned int distance = 700 , noise = 50, intrt = 0;
+unsigned int distance = 650 , noise = 50, intrt = 0;
 int kaf_F[2] , kaf_L[2] , kaf_B[2] , kaf_R[2] , DSensor[20], FaseleAzTop ;
 int noise_fo , noise_fi , noise_ri , noise_ro , noise_bi , noise_bo , noise_li , noise_lo ;
 bool  fo , ro , bo , lo , fi , ri , bi , li ;
@@ -70,22 +70,22 @@ void setup()
   pinMode(FEEDBACK, INPUT);
   //  pinMode(led,OUTPUT);
   //=============================================//
-  //    digitalWrite(BUZ, HIGH);
-  //    delay(1000);
-  //    digitalWrite(BUZ, LOW);
-  //    delay(100);
-  //    digitalWrite(BUZ, HIGH);
-  //    delay(105);
-  //    digitalWrite(BUZ, LOW);
-  //    delay(300);
-  //    digitalWrite(BUZ, HIGH);
-  //    delay(200);
-  //    digitalWrite(BUZ, LOW);
-  //    delay(100);
+      digitalWrite(BUZ, HIGH);
+      delay(1000);
+      digitalWrite(BUZ, LOW);
+      delay(100);
+      digitalWrite(BUZ, HIGH);
+      delay(105);
+      digitalWrite(BUZ, LOW);
+      delay(300);
+      digitalWrite(BUZ, HIGH);
+      delay(200);
+      digitalWrite(BUZ, LOW);
+      delay(100);
   ////////////////////
   Wire.setSCL(7);
   Wire.setSDA(8);
-  Wire.begin ();
+  Wire.begin();
   Serial.begin(38400);
   analogWriteResolution(10);
   analogWriteFrequency(9, 29296);
@@ -105,41 +105,26 @@ void setup()
 //////////////////////////////////////////////////////////////////
 
 void loop()
-{ 
-   if (digitalRead(SET) == LOW)
-  {
-    while (digitalRead(SET) == LOW)
+{
+    if (digitalRead(SET) == LOW)
     {
-      nointerrupt = 100;
-      //             Kaf_setup();
-      digitalWrite(BUZ, HIGH);
-      read_compass();
-//      //             set_kaf();
+      while (digitalRead(SET) == LOW)
+      {
+        nointerrupt = 100;
+        digitalWrite(BUZ, HIGH);
+        read_compass();
+      }
+      EEPROM.write(1, highByte(bearing));
+      EEPROM.write(2, lowByte(bearing));
+      nSETUP  = bearing ;
+     digitalWrite(BUZ,LOW);
+      nointerrupt = 0;
     }
-    EEPROM.write(1, highByte(bearing));
-    EEPROM.write(2, lowByte(bearing));
-    //  EEPROM.write(3, highByte(R_noise[0]));
-    //  EEPROM.write(4, lowByte(R_noise[0]));
-    //  EEPROM.write(5, highByte(R_noise[1]));
-    //  EEPROM.write(6, lowByte(R_noise[1]));
-    //  EEPROM.write(7, highByte(F_noise[0]));
-    //  EEPROM.write(8, lowByte(F_noise[0]));
-    //  EEPROM.write(9, highByte(F_noise[1]));
-    //  EEPROM.write(10, lowByte(F_noise[1]));
-    //  EEPROM.write(11, highByte(L_noise[0]));
-    //  EEPROM.write(12, lowByte(L_noise[0]));
-    //  EEPROM.write(13, highByte(L_noise[1]));
-    //  EEPROM.write(14, lowByte(L_noise[1]));
-    //  EEPROM.write(15, highByte(B_noise[0]));
-    //  EEPROM.write(16, lowByte(B_noise[0]));
-    //  EEPROM.write(17, highByte(B_noise[1]));
-    //  EEPROM.write(18, lowByte(B_noise[1]));
-    //}
-    //
-    nSETUP  = bearing ; 
-   nointerrupt = 0;
-   }
+   
+  
     biggest();
     if (Arezoo < big_sensor ) follow();
-    else  STOP();
+    else
+    STOP();
+  //show_sensor();
 }
